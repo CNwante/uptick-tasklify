@@ -1,5 +1,5 @@
 export type TaskStatus = "todo" | "in progress" | "completed";
-export type TaskPirority = "low" | "medium" | "high";
+export type TaskPriority = "low" | "medium" | "high";
 
 export interface Task {
   id: string;
@@ -9,7 +9,7 @@ export interface Task {
   updatedAt?: string;
   dueDate?: string;
   status: TaskStatus;
-  priority: TaskPirority;
+  priority: TaskPriority;
 }
 
 export interface TaskState {

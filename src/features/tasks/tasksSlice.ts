@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { TaskStatus, Pirority, Task, TaskState } from "../../types/taskTypes";
+import type { TaskStatus, TaskPriority, Task, TaskState } from "../../types/taskTypes";
 
 const initialState: TaskState = {
   tasks: [],
@@ -31,7 +31,7 @@ const taskSlice = createSlice({
         title: string;
         description?: string;
         dueDate?: string;
-        priority?: Pirority;
+        priority?: TaskPriority;
       }>
     ) => {
       const task = state.tasks.find((t) => t.id === action.payload.id);
