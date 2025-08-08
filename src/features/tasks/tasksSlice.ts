@@ -19,7 +19,7 @@ const taskSlice = createSlice({
         description: action.payload.description,
         status: "todo",
         createdAt: new Date().toISOString(),
-        priority: null,
+        priority: "low",
       };
       state.tasks.push(newTask);
     },
