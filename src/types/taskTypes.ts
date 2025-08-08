@@ -9,7 +9,7 @@ export interface Task {
   updatedAt?: string;
   dueDate?: string;
   status: TaskStatus;
-  priority: TaskPirority | null;
+  priority: TaskPirority;
 }
 
 export interface TaskState {
