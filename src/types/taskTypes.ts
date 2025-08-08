@@ -13,5 +13,5 @@ export interface Task {
 }
 
 export interface TaskState {
-  tasks: Task[];
+  items: Task[];
 }
