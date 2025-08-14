@@ -14,19 +14,10 @@ const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
-    addTask: (
-      state,
-      action: PayloadAction<{ title: string; description?: string }>
-    ) => {
-      const newTask: Task = {
-        id: crypto.randomUUID(),
-        title: action.payload.title,
-        description: action.payload.description ?? "",
-        status: "todo",
-        createdAt: new Date().toISOString(),
-        priority: "low",
-      };
-      state.items.push(newTask);
+    addTask(state, action: PayloadAction<Omit<Task, "id">>) {
+      const payload = action.payload;
+      const newTask: Task = { id: crypto.randomUUID(), ...payload };
+      state.items.unshift(newTask);
     },
 
     updateTask: (
