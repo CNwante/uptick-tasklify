@@ -46,16 +46,15 @@ const Column: React.FC<{
   return (
     <TaskList key={status}>
       <TaskListHeader title={status} variant={variant} />
-      {isOpen && (
+      {status === "todo" && isOpen && (
         <TaskForm
           onSave={handleSave}
           onCancel={handleCancel}
           initialValues={{
             title: "",
             description: "",
-            status: "todo",
             priority: "low",
-            createdAt: new Date().toISOString(),
+            createdAt: new Date().toISOString().split("T")[0],
             dueDate: "",
           }}
         />

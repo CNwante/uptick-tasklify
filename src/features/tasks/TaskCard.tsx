@@ -17,6 +17,13 @@ export const TaskCard: React.FC<TaskCardProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
+  const handleEdit = () => {
+    dispatch({
+      type: "taskForm/openEditTaskForm",
+      payload: { id, title, description, createdAt, dueDate, status, priority },
+    });
+  };
+
   const priorityColors: Record<TaskPriority, { text: string; bg: string }> = {
     low: {
       text: "text-gray-700",
@@ -72,6 +79,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               type="button"
               aria-label="Edit"
               className="p-1 cursor-pointer"
+              onClick={handleEdit}
             >
               <LuPencilLine size={18} />
             </button>

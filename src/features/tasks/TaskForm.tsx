@@ -1,5 +1,5 @@
 import { LuSave, LuX } from "react-icons/lu";
-import type { TaskPriority, TaskStatus } from "../../types/common";
+import type { Task, TaskPriority } from "../../types/common";
 import clsx from "clsx";
 import { useState } from "react";
 
@@ -8,12 +8,11 @@ interface AddTaskFormProps {
     id?: string;
     title: string;
     description: string;
-    status: TaskStatus;
     priority: TaskPriority;
     createdAt: string;
     dueDate: string;
   };
-  onSave: (data: any) => void;
+  onSave: (data: Omit<Task, "id" | "status">) => void;
   onCancel: () => void;
 }
 
@@ -64,17 +63,6 @@ export const TaskForm: React.FC<AddTaskFormProps> = ({
           {/* Top Row */}
           <div className="flex items-center justify-between gap-2 pb-2 border-b border-gray-300">
             <div className="flex flex-wrap gap-3">
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="bg-gray-200 rounded-md text-sm px-2 py-0.5 focus:outline-none cursor-pointer"
-              >
-                <option value="todo">todo</option>
-                <option value="in progress">in progress</option>
-                <option value="completed">completed</option>
-              </select>
-
               <select
                 name="priority"
                 value={formData.priority}
