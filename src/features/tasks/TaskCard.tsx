@@ -3,7 +3,7 @@ import { MdDragIndicator } from "react-icons/md";
 import type { TaskPriority, TaskStatus } from "../../types/common";
 import type { TaskCardProps } from "./types";
 import clsx from "clsx";
-import { updateStatus, updateTask } from "./tasksSlice";
+import { deleteTask, updateStatus, updateTask } from "./tasksSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import { openEditTaskForm } from "./taskFormSlice";
 
@@ -21,6 +21,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   const handleEdit = () => {
     dispatch(openEditTaskForm({ id, title, description, createdAt, dueDate, status, priority }));
   };
+
+  const handleDelete = () => {
+    dispatch(deleteTask(id));
+  }
 
   const priorityColors: Record<TaskPriority, { text: string; bg: string }> = {
     low: {
@@ -86,6 +90,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               type="button"
               aria-label="Delete"
               className="p-1 cursor-pointer"
+              onClick={handleDelete}
             >
               <LuTrash2
                 size={18}
