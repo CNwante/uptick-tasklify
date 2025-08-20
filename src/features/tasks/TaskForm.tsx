@@ -4,15 +4,8 @@ import clsx from "clsx";
 import { useState } from "react";
 
 interface AddTaskFormProps {
-  initialValues?: {
-    id?: string;
-    title: string;
-    description: string;
-    priority: TaskPriority;
-    createdAt: string;
-    dueDate: string;
-  };
-  onSave: (data: Omit<Task, "id" | "status">) => void;
+  initialValues?: Partial<Omit<Task, "id" | "status" | "updatedAt">>;
+  onSave: (data: Omit<Task, "id" | "status" | "updatedAt">) => void;
   onCancel: () => void;
 }
 
@@ -28,7 +21,16 @@ export const TaskForm: React.FC<AddTaskFormProps> = ({
   onSave,
   onCancel,
 }) => {
-  const [formData, setFormData] = useState(() => ({ ...initialValues }));
+  const [formData, setFormData] = useState<Omit<Task, "id" | "status" | "updatedAt">>(
+    {
+      title: "",
+      description: "",
+      priority: "low",
+      createdAt: "",
+      dueDate: "",
+      ...initialValues,
+    }
+  );
 
   const priorityColors: Record<TaskPriority, { text: string; bg: string }> = {
     low: { text: "text-gray-700", bg: "bg-gray-300" },

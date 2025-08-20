@@ -15,6 +15,7 @@ export interface TaskListProps {
 
 export interface FormState {
   formVisibility: Record<TaskStatus, boolean>;
+  editingTask: Task | null;
 }
 
 export interface TaskListBodyProps {

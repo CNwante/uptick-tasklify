@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { TaskStatus } from "../../types/common";
+import type { Task, TaskStatus } from "../../types/common";
 import type { FormState } from "./types";
 import type { RootState } from "../../redux/store";
 
@@ -9,6 +9,7 @@ const initialState: FormState = {
     "in progress": false,
     completed: false,
   },
+  editingTask: null,
 };
 
 const taskFormSlice = createSlice({
@@ -17,14 +18,20 @@ const taskFormSlice = createSlice({
   reducers: {
     openTaskForm(state, action: PayloadAction<TaskStatus>) {
       state.formVisibility[action.payload] = true;
+      state.editingTask = null;
     },
     closeTaskForm(state, action: PayloadAction<TaskStatus>) {
       state.formVisibility[action.payload] = false;
+      state.editingTask = null;
     },
+    openEditTaskForm(state, action: PayloadAction<Task>) {
+      state.formVisibility[action.payload.status] = true;
+      state.editingTask = action.payload;
+    }
   },
 });
 
-export const { openTaskForm, closeTaskForm } = taskFormSlice.actions;
+export const { openTaskForm, closeTaskForm, openEditTaskForm } = taskFormSlice.actions;
 export const taskFormReducer = taskFormSlice.reducer;
 
 export const selectIsTaskFormVisibile = (

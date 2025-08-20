@@ -7,7 +7,7 @@ import {
 import { TaskList } from "../features/tasks/TaskList";
 import { TaskListBody } from "../features/tasks/TaskListBody";
 import { TaskListHeader } from "../features/tasks/TaskListHeader";
-import { addTask } from "../features/tasks/tasksSlice";
+import { addTask, updateTask } from "../features/tasks/tasksSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import type { TaskStatus } from "../types/common";
 
@@ -32,10 +32,15 @@ const Column: React.FC<{
 }> = ({ status, variant }) => {
   const dispatch = useAppDispatch();
   const isOpen = useAppSelector((s) => selectIsTaskFormVisibile(s, status));
+  const editingTask = useAppSelector((s) => s.taskForm.editingTask);
 
   const handleSave = (data: any) => {
-    const payload = { ...data, status };
-    dispatch(addTask(payload));
+    if (editingTask) {
+      dispatch(updateTask({ id: editingTask.id, ...data }));
+    } else {
+      const payload = { ...data, status };
+      dispatch(addTask(payload));
+    }
     dispatch(closeTaskForm(status));
   };
 
@@ -46,17 +51,21 @@ const Column: React.FC<{
   return (
     <TaskList key={status}>
       <TaskListHeader title={status} variant={variant} />
-      {status === "todo" && isOpen && (
+      {isOpen && (
         <TaskForm
           onSave={handleSave}
           onCancel={handleCancel}
-          initialValues={{
-            title: "",
-            description: "",
-            priority: "low",
-            createdAt: new Date().toISOString().split("T")[0],
-            dueDate: "",
-          }}
+          initialValues={
+            editingTask && editingTask.status === status
+              ? editingTask
+              : {
+                  title: "",
+                  description: "",
+                  priority: "low",
+                  createdAt: new Date().toISOString().split("T")[0],
+                  dueDate: "",
+                }
+          }
         />
       )}
       <TaskListBody status={status} />

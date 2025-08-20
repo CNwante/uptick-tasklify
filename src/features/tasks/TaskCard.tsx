@@ -5,6 +5,7 @@ import type { TaskCardProps } from "./types";
 import clsx from "clsx";
 import { updateStatus, updateTask } from "./tasksSlice";
 import { useAppDispatch } from "../../redux/hooks";
+import { openEditTaskForm } from "./taskFormSlice";
 
 export const TaskCard: React.FC<TaskCardProps> = ({
   id,
@@ -18,10 +19,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   const dispatch = useAppDispatch();
 
   const handleEdit = () => {
-    dispatch({
-      type: "taskForm/openEditTaskForm",
-      payload: { id, title, description, createdAt, dueDate, status, priority },
-    });
+    dispatch(openEditTaskForm({ id, title, description, createdAt, dueDate, status, priority }));
   };
 
   const priorityColors: Record<TaskPriority, { text: string; bg: string }> = {
