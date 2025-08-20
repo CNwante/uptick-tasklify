@@ -20,5 +20,6 @@ export interface FormState {
 
 export interface TaskListBodyProps {
   status: TaskStatus;
+  hiddenTaskId?: string;
 }
 

@@ -63,8 +63,14 @@ export const { addTask, updateTask, updateStatus, deleteTask } =
 
 export const taskReducer = tasksSlice.reducer;
 
-export const selectTasksByStatus = (state: RootState, status: TaskStatus) =>
-  state.tasks.items.filter((t) => t.status === status);
+export const selectTasksByStatus = (
+  state: RootState,
+  status: TaskStatus,
+  hiddenTaskId?: string
+) =>
+  state.tasks.items.filter(
+    (task) => task.status === status && task.id !== hiddenTaskId
+  );
 
 export const selectTasksCountByStatus = (
   state: RootState,

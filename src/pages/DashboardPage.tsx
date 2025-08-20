@@ -1,19 +1,10 @@
 import { Header } from "../components/Header";
-import { TaskForm } from "../features/tasks/TaskForm";
-import {
-  closeTaskForm,
-  selectIsTaskFormVisibile,
-} from "../features/tasks/taskFormSlice";
 import { TaskList } from "../features/tasks/TaskList";
 import { TaskListBody } from "../features/tasks/TaskListBody";
 import { TaskListHeader } from "../features/tasks/TaskListHeader";
-import { addTask, updateTask } from "../features/tasks/tasksSlice";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import type { TaskStatus } from "../types/common";
 
 export const DashboardPage = () => {
-  // const statuses: TaskStatus[] = ["todo", "in progress", "completed"];
-
   return (
     <div className="bg-[#cad4f5] min-h-screen">
       <Header />
@@ -30,44 +21,9 @@ const Column: React.FC<{
   status: TaskStatus;
   variant: "titleWithAdd" | "titleOnly";
 }> = ({ status, variant }) => {
-  const dispatch = useAppDispatch();
-  const isOpen = useAppSelector((s) => selectIsTaskFormVisibile(s, status));
-  const editingTask = useAppSelector((s) => s.taskForm.editingTask);
-
-  const handleSave = (data: any) => {
-    if (editingTask) {
-      dispatch(updateTask({ id: editingTask.id, ...data }));
-    } else {
-      const payload = { ...data, status };
-      dispatch(addTask(payload));
-    }
-    dispatch(closeTaskForm(status));
-  };
-
-  const handleCancel = () => {
-    dispatch(closeTaskForm(status));
-  };
-
   return (
-    <TaskList key={status}>
+    <TaskList>
       <TaskListHeader title={status} variant={variant} />
-      {isOpen && (
-        <TaskForm
-          onSave={handleSave}
-          onCancel={handleCancel}
-          initialValues={
-            editingTask && editingTask.status === status
-              ? editingTask
-              : {
-                  title: "",
-                  description: "",
-                  priority: "low",
-                  createdAt: new Date().toISOString().split("T")[0],
-                  dueDate: "",
-                }
-          }
-        />
-      )}
       <TaskListBody status={status} />
     </TaskList>
   );
