@@ -10,7 +10,8 @@ export interface TaskListHeaderProps {
 }
 
 export interface TaskListProps {
-  children: React.ReactNode;
+  status: TaskStatus;
+  variant: "titleWithAdd" | "titleOnly";
 }
 
 export interface FormState {
