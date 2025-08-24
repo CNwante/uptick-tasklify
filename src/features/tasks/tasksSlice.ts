@@ -1,27 +1,24 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { TaskStatus, TaskPriority, Task, TaskState } from "../../types/taskTypes";
+import type {
+  TaskStatus,
+  TaskPriority,
+  Task,
+  TaskState,
+} from "../../types/common";
+import type { RootState } from "../../redux/store";
 
 const initialState: TaskState = {
   items: [],
 };
 
-const taskSlice = createSlice({
+const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
-    addTask: (
-      state,
-      action: PayloadAction<{ title: string; description?: string }>
-    ) => {
-      const newTask: Task = {
-        id: crypto.randomUUID(),
-        title: action.payload.title,
-        description: action.payload.description ?? "",
-        status: "todo",
-        createdAt: new Date().toISOString(),
-        priority: "low",
-      };
-      state.items.push(newTask);
+    addTask(state, action: PayloadAction<Omit<Task, "id">>) {
+      const payload = action.payload;
+      const newTask: Task = { id: crypto.randomUUID(), ...payload };
+      state.items.unshift(newTask);
     },
 
     updateTask: (
@@ -62,6 +59,20 @@ const taskSlice = createSlice({
 });
 
 export const { addTask, updateTask, updateStatus, deleteTask } =
-  taskSlice.actions;
+  tasksSlice.actions;
 
-export const taskReducer = taskSlice.reducer;
+export const taskReducer = tasksSlice.reducer;
+
+export const selectTasksByStatus = (
+  state: RootState,
+  status: TaskStatus,
+  hiddenTaskId?: string
+) =>
+  state.tasks.items.filter(
+    (task) => task.status === status && task.id !== hiddenTaskId
+  );
+
+export const selectTasksCountByStatus = (
+  state: RootState,
+  status: TaskStatus
+) => selectTasksByStatus(state, status).length;
