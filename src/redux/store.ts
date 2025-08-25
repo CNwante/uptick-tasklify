@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { taskReducer } from "../features/tasks/tasksSlice";
 import { taskFormReducer } from "../features/tasks/taskFormSlice";
 import { loadTasks, saveTasks } from "../utils/storage";
+import { taskFiltersReducer } from "../features/tasks/taskFiltersSlice";
 
 export const store = configureStore({
   reducer: {
     tasks: taskReducer,
     taskForm: taskFormReducer,
+    taskFilters: taskFiltersReducer,
   },
   preloadedState: {
     tasks: {
