@@ -1,4 +1,4 @@
-import type { Task, TaskStatus } from "../../types/common";
+import type { Task, TaskStatus, TaskPriority } from "../../types/common";
 
 export interface TaskCardProps extends Task {
 
@@ -24,3 +24,12 @@ export interface TaskListBodyProps {
   hiddenTaskId?: string;
 }
 
+export type PriorityFilter = TaskPriority | "all";
+
+export interface TaskStatusColumn {
+  priority: PriorityFilter;
+}
+
+export interface TaskfilterState {
+  byStatus: Record<TaskStatus, TaskStatusColumn>;
+}
