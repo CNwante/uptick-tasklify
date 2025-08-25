@@ -15,10 +15,15 @@ export const store = configureStore({
   }
 });
 
+let previousTasksState = store.getState().tasks.items;
+
 store.subscribe(() => {
-  const state = store.getState();
-  saveTasks(state.tasks.items);
-})
+  const currentTasksState = store.getState().tasks.items;
+  if (previousTasksState !== currentTasksState) {
+    saveTasks(currentTasksState);
+    previousTasksState = currentTasksState;
+  }
+});
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
