@@ -84,13 +84,16 @@ export const selectTasksCountByStatus = (
 
 export const selectVisibleTasks = createSelector(
   [
-    (state: RootState, status: TaskStatus) =>
-      selectTasksByStatus(state, status),
+    (state: RootState) => state.tasks.items,
+    (_state: RootState, status: TaskStatus) => status,
     (state: RootState, status: TaskStatus) =>
       selectPriorityFilterByStatus(state, status),
   ],
-  (tasks, priority) =>
-    priority === "all"
-      ? tasks
-      : tasks.filter((task) => task.priority === (priority as TaskPriority))
+  (tasks, status, priority) => {
+    const filtered = tasks.filter((t) => t.status === status);
+
+    return priority === "all"
+      ? filtered
+      : filtered.filter((t) => t.priority === (priority as TaskPriority));
+  }
 );
