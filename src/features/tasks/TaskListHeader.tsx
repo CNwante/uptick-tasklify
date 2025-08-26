@@ -5,6 +5,7 @@ import type { TaskStatus } from "../../types/common";
 import { selectTasksCountByStatus } from "./tasksSlice";
 import { openTaskForm } from "./taskFormSlice";
 import {
+  selectFilteredCountByStatus,
   selectPriorityFilterByStatus,
   setPriorityFilter,
 } from "./taskFiltersSlice";
@@ -16,7 +17,10 @@ export const TaskListHeader: React.FC<TaskListHeaderProps> = ({
   const dispatch = useAppDispatch();
   const status = title as TaskStatus;
 
-  const count = useAppSelector((s) => selectTasksCountByStatus(s, status));
+  const filteredCount = useAppSelector((s) =>
+    selectFilteredCountByStatus(s, status)
+  );
+  const totalCount = useAppSelector((s) => selectTasksCountByStatus(s, status));
   const priority = useAppSelector((s) =>
     selectPriorityFilterByStatus(s, status)
   );
@@ -26,7 +30,7 @@ export const TaskListHeader: React.FC<TaskListHeaderProps> = ({
       <h2 className="capitalize">
         {title}{" "}
         <span className="bg-[#9aaded] text-white w-5 h-5 inline-flex justify-center items-center p-[13px] rounded-full">
-          {count}
+          {filteredCount}/{totalCount}
         </span>
       </h2>
 
