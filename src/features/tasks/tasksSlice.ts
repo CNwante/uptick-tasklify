@@ -1,4 +1,8 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSelector,
+  createSlice,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import type {
   TaskStatus,
   TaskPriority,
@@ -6,6 +10,7 @@ import type {
   TaskState,
 } from "../../types/common";
 import type { RootState } from "../../redux/store";
+import { selectPriorityFilterByStatus } from "./taskFiltersSlice";
 
 const initialState: TaskState = {
   items: [],
@@ -76,3 +81,19 @@ export const selectTasksCountByStatus = (
   state: RootState,
   status: TaskStatus
 ) => selectTasksByStatus(state, status).length;
+
+export const selectVisibleTasks = createSelector(
+  [
+    (state: RootState) => state.tasks.items,
+    (_state: RootState, status: TaskStatus) => status,
+    (state: RootState, status: TaskStatus) =>
+      selectPriorityFilterByStatus(state, status),
+  ],
+  (tasks, status, priority) => {
+    const filtered = tasks.filter((t) => t.status === status);
+
+    return priority === "all"
+      ? filtered
+      : filtered.filter((t) => t.priority === (priority as TaskPriority));
+  }
+);
